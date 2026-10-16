@@ -5,12 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JAY English in Osaka</title>
 <meta name="description" content="大阪の英会話スクール JAY English in Osaka。イギリス人のウィルとジェイの2人が教えます。">
+<script>
+/* オープニングを出すかどうかを、表示の前に決める(最初の1回だけ・URLに ?intro を付けると何度でも再生) */
+(function () {
+  var d = document.documentElement;
+  d.classList.add("js");
+  var reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var seen = false;
+  try { seen = !!sessionStorage.getItem("jayIntroSeen"); } catch (e) {}
+  if (!reduce && (!seen || /[?&]intro\b/.test(location.search))) { d.classList.add("intro-on"); }
+  /* 万が一スクリプトが動かなかった場合でも、サイトが見えるようにする保険 */
+  setTimeout(function () { d.classList.remove("intro-on"); d.classList.add("split", "hero-go"); }, 9000);
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="intro" id="intro" role="presentation">
+  <canvas id="introCanvas" aria-hidden="true"></canvas>
+  <div class="intro-copy">
+    <p class="intro-kicker">JAY English in Osaka</p>
+    <p class="intro-catch" id="introCatch" lang="ja"><span class="w">知ってる英語を、</span><span class="w">話せる英語に！</span></p>
+    <span class="intro-line" aria-hidden="true"></span>
+    <p class="intro-en">From Osaka, to the world.</p>
+  </div>
+  <button class="intro-skip" id="introSkip" type="button" aria-label="オープニングをスキップ">Skip</button>
+</div>
+
 <header class="site-header">
   <div class="wrap hdr">
     <a class="logo" id="logo" href="#top" aria-label="Jay English トップへ">
@@ -42,14 +66,14 @@
     <div class="menu-wrap" id="menuWrap">
     <button class="burger" id="burger" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="nav"><span></span></button>
     <nav class="nav" id="nav" aria-label="メインメニュー">
-      <button class="nav-item" type="button" data-stage="特徴" data-en="Features"><span class="en">Features</span><span class="ja">特徴</span></button>
+      <button class="nav-item" type="button" data-open-features><span class="en">Features</span><span class="ja">特徴</span></button>
       <div class="nav-drop" id="navDrop">
         <a class="nav-item" id="navCourses" href="#courses" aria-haspopup="true"><span class="en">Courses</span><span class="ja">コース内容</span></a>
         <div class="drop"><div class="drop-in">
           <a class="drop-item" href="#course-1"><span class="en">One-to-One</span><span class="ja">マンツーマン英会話</span></a>
-          <a class="drop-item" href="#course-2"><span class="en">Speaking</span><span class="ja">スピーキングコース</span></a>
-          <a class="drop-item" href="#course-3"><span class="en">Study Abroad</span><span class="ja">留学前の準備コース</span></a>
-          <button class="drop-item" id="openKids" type="button"><span class="en">Kids</span><span class="ja">Kids(子ども向け)</span></button>
+          <a class="drop-item" href="#course-2"><span class="en">Casual Conversation</span><span class="ja">カジュアルConversation</span></a>
+          <button class="drop-item" type="button" data-stage="パーソナライズコース" data-en="Personalized" data-desc="目的もレベルも人それぞれ。お一人おひとりに合わせて、コースを設計します。"><span class="en">Personalized</span><span class="ja">パーソナライズコース</span></button>
+          <button class="drop-item" id="openKids" data-open-kids type="button"><span class="en">Kids</span><span class="ja">Kids(子ども向け)</span></button>
         </div></div>
       </div>
       <button class="nav-item" type="button" data-stage="JayとWillについて" data-en="About"><span class="en">About</span><span class="ja">JayとWillについて</span></button>
@@ -62,23 +86,35 @@
 
 <section class="hero" id="top">
   <div class="hero-bg"><img src="top.jpg" alt="講師と生徒が楽しそうに英語で話している様子"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
   <div class="wrap hero-inner">
     <p class="eyebrow">English Conversation School</p>
-    <h1 class="wordmark">
+    <h1 class="wordmark" data-split aria-label="JAY English in Osaka">
       <span>JAY English</span>
       <span class="in">in Osaka</span>
     </h1>
-    <p class="tagline">知ってる英語を、使える英語に。</p>
+    <p class="tagline" data-split><span class="w">知ってる英語を、</span><span class="w">話せる英語に！</span></p>
     <p class="sub">イギリス人のウィルとジェイの2人が教える、大阪の英会話スクール。</p>
     <a class="btn-hero" href="#counseling">カウンセリングを申し込む</a>
+    <span class="hero-note">初回体験レッスン <strong>1,000円</strong></span>
   </div>
 
   <div class="map" aria-hidden="true">
-    <svg viewBox="0 -50 1200 310" xmlns="http://www.w3.org/2000/svg">
-      <path class="grat" d="M0 65H1200M0 107H1200M0 149H1200M0 191H1200M0 233H1200M100 -50V260M200 -50V260M300 -50V260M400 -50V260M500 -50V260M600 -50V260M700 -50V260M800 -50V260M900 -50V260M1000 -50V260M1100 -50V260"/>
+    <svg viewBox="0 -50 1200 340" xmlns="http://www.w3.org/2000/svg">
+      <path class="grat" d="M0 65H1200M0 107H1200M0 149H1200M0 191H1200M0 233H1200M0 275H1200M0 317H1200M100 -50V290M200 -50V290M300 -50V290M400 -50V290M500 -50V290M600 -50V290M700 -50V290M800 -50V290M900 -50V290M1000 -50V290M1100 -50V290"/>
       <g class="routes">
         <path pathLength="1" d="M600 130 Q374 -50 148 59"/>
         <path pathLength="1" d="M600 130 Q800 -40 1010 80"/>
+        <path pathLength="1" d="M600 130 Q500 140 430 190"/>
+        <path pathLength="1" d="M600 130 Q600 200 715 215"/>
+        <path pathLength="1" d="M600 130 Q780 105 950 205"/>
+      </g>
+      <g class="flyers">
+        <circle class="flyer" r="2.8"><animateMotion begin="indefinite" dur="4.2s" repeatCount="indefinite" path="M600 130 Q500 140 430 190"/><animate attributeName="opacity" begin="indefinite" dur="4.2s" repeatCount="indefinite" values="0;1;1;0" keyTimes="0;.12;.85;1"/></circle>
+        <circle class="flyer" r="2.8"><animateMotion begin="indefinite" dur="5s" repeatCount="indefinite" path="M600 130 Q600 200 715 215"/><animate attributeName="opacity" begin="indefinite" dur="5s" repeatCount="indefinite" values="0;1;1;0" keyTimes="0;.12;.85;1"/></circle>
+        <circle class="flyer" r="2.8"><animateMotion begin="indefinite" dur="6.8s" repeatCount="indefinite" path="M600 130 Q780 105 950 205"/><animate attributeName="opacity" begin="indefinite" dur="6.8s" repeatCount="indefinite" values="0;1;1;0" keyTimes="0;.12;.85;1"/></circle>
+        <circle class="flyer" r="2.8"><animateMotion begin="indefinite" dur="5.4s" repeatCount="indefinite" path="M600 130 Q374 -50 148 59"/><animate attributeName="opacity" begin="indefinite" dur="5.4s" repeatCount="indefinite" values="0;1;1;0" keyTimes="0;.12;.85;1"/></circle>
+        <circle class="flyer" r="2.8"><animateMotion begin="indefinite" dur="6.2s" repeatCount="indefinite" path="M600 130 Q800 -40 1010 80"/><animate attributeName="opacity" begin="indefinite" dur="6.2s" repeatCount="indefinite" values="0;1;1;0" keyTimes="0;.12;.85;1"/></circle>
       </g>
       <circle class="ring" cx="600" cy="130" r="14"/>
       <circle class="dot" cx="600" cy="130" r="5"/>
@@ -86,7 +122,13 @@
       <circle class="dot" cx="148" cy="59" r="3.5"/>
       <text class="city" x="148" y="86" text-anchor="middle">UK</text>
       <circle class="dot" cx="1010" cy="80" r="3.5"/>
-      <text class="city" x="1010" y="107" text-anchor="middle">CANADA</text>
+      <text class="city" x="1010" y="107" text-anchor="middle">VANCOUVER</text>
+      <circle class="dot" cx="430" cy="190" r="3.5"/>
+      <text class="city" x="430" y="217" text-anchor="middle">PHILIPPINES</text>
+      <circle class="dot" cx="715" cy="215" r="3.5"/>
+      <text class="city" x="715" y="242" text-anchor="middle">AUSTRALIA</text>
+      <circle class="dot" cx="950" cy="205" r="3.5"/>
+      <text class="city" x="950" y="232" text-anchor="middle">NEW ZEALAND</text>
     </svg>
   </div>
 </section>
@@ -141,6 +183,13 @@
           </div>
           <div class="tags"><span>イギリス出身</span><span>聞き取りやすい発音</span></div>
           <p class="bio">イギリス英語ですが、発音はとても聞き取りやすいです。カナダではバーテンダーとして、また英語の講師として働いた経験があり、日常で使う英語も、教える英語も知っています。</p>
+          <div class="bio-en" lang="en">
+            <p>Hello mate! I'm Will.</p>
+            <p>I'm from Manchester in England – the same city as the famous rock band Oasis.</p>
+            <p>After spending three years in Canada as a bartender and part-time English tutor, I came to Japan.</p>
+            <p>In my free time, I love playing the guitar, exploring new areas, and finding good food and coffee.</p>
+            <p>I look forward to meeting you all!</p>
+          </div>
         </article>
 
         <article class="teacher">
@@ -154,7 +203,6 @@
           <div class="tags"><span>英語ゼロから</span><span>海外ひとり旅</span></div>
           <p class="bio">もともと英語はまったく話せず、学生時代の成績は赤点レベルでした。フィリピンで数か月、カナダで1年間、英語の勉強をして、今ではネイティブとも話すことができ、海外旅行にもひとりで行けるようになりました。つまずく気持ちが身に染みて分かるから、安心して話せる場をつくります。</p>
           <p class="bio">自分が勉強をするときにあったらよかったのにな、というような場所を提供します。</p>
-          <p class="bio">僕もまだまだですが、一緒に勉強していきましょう。</p>
         </article>
       </div>
     </div>
@@ -232,6 +280,11 @@
       <p class="eyebrow">Courses</p>
       <h2>コース内容</h2>
       <p class="c-lead">ネイティブ講師と話して、知っている英語を使える英語に。</p>
+      <div class="trial">
+        <p class="trial-label"><span class="trial-en">First Lesson</span>初回体験レッスン</p>
+        <p class="trial-price"><span class="num">1,000</span><span class="yen">円</span></p>
+        <a class="trial-btn" href="#counseling" data-go-counseling>無料で問い合わせる<span aria-hidden="true"> →</span></a>
+      </div>
     </div>
   </div>
   <div class="wrap c-body">
@@ -239,30 +292,108 @@
         <article class="course" id="course-1">
           <p class="eyebrow accent">One-to-One</p>
           <div>
-            <h3>英語はわかるのに、話せない。を卒業する大阪のマンツーマン英会話</h3>
-            <p class="desc">学校で習って知っている英語を、実際に口から出す練習をします。マンツーマンだから、自分のペースで話せます。</p>
+            <h3>日本にいながら、海外にいる時間を。英語が出てこない人も、もう一段上を目指す人も|大阪のマンツーマン英会話</h3>
+            <p class="desc">学校で習った英語を、実際に口から出す練習をします。</p>
+            <p class="desc">英語がなかなか出てこない方は、自分のペースで。わからないところは、ジェイが日本語でサポートします。</p>
+            <p class="desc">日常会話はできる方は、ウィルとネイティブのテンポで雑談を。「簡単な言葉でしか言えない」を、自然な言い回しに直していきます。言い方の違いがわかりにくいときは、ジェイが日本語で一言補足します。</p>
+            <p class="fit-title">こんな方に</p>
+            <ul class="fit">
+              <li>言いたいことが、簡単な言葉でしか言えない</li>
+              <li>ネイティブ同士の会話になると聞き取れない</li>
+              <li>留学や海外のあと、伸びが止まった</li>
+            </ul>
+            <div class="variants">
+              <div class="variant">
+                <h4>マンツーマン<span class="price">1レッスン 4,000円</span></h4>
+                <p>講師と1対1で話す練習。初級は自分のペースで、中級は雑談の中で、言い回しを自然な形に直していきます。</p>
+              </div>
+              <div class="variant strong">
+                <h4>2 to 1<span class="badge">日本人サポート付き</span><span class="price">1レッスン 4,000円</span></h4>
+                <p>ウィルとジェイの2人で、あなた1人を担当します。ウィルがネイティブの英語で話し、わからなければジェイが日本語で補足します。慣れたら、日本語を必要なときだけに減らせます。二人で教えられることが、私たちの強みです。</p>
+                <p class="limit">※ 講師2人で担当するため、受付人数に限りがあります。</p>
+              </div>
+            </div>
           </div>
         </article>
 
         <article class="course" id="course-2">
-          <p class="eyebrow accent">Speaking</p>
+          <p class="eyebrow accent">Casual Conversation</p>
           <div>
-            <h3>イギリス人講師と話す、2ヶ月のスピーキングコース|大阪</h3>
-            <p class="desc">イギリス人講師のウィルと、2ヶ月かけて話す量を増やします。聞き取りやすい発音で、会話のテンポに慣れていきます。</p>
+            <h3>イギリス人講師と気軽に話す、カジュアルConversation|大阪</h3>
+            <p class="desc">イギリス人講師のウィルと、日常の話題を気軽に英語でおしゃべりします。聞き取りやすい発音で、会話のテンポに慣れていきます。</p>
           </div>
         </article>
 
         <article class="course" id="course-3">
-          <p class="eyebrow accent">Study Abroad</p>
+          <p class="eyebrow accent">Personalized</p>
           <div>
-            <h3>留学前の準備コース</h3>
-            <p class="desc">留学先での生活や授業で使う英語を、出発前に練習します。カナダやフィリピンで学んだジェイの経験も伝えます。</p>
+            <h3>あなたに合わせて設計する、パーソナライズコース</h3>
+            <p class="desc">目的も、今のレベルも、使える時間も人それぞれ。カウンセリングでお話を聞いて、お一人おひとりに合わせたコースを設計します。</p>
+            <button class="course-link" type="button" data-stage="パーソナライズコース" data-en="Personalized" data-desc="目的もレベルも人それぞれ。お一人おひとりに合わせて、コースを設計します。">詳しく見る</button>
+          </div>
+        </article>
+
+        <article class="course kids" id="course-4">
+          <p class="eyebrow accent">Kids</p>
+          <div>
+            <h3>はじめての英語も安心。ウィルとジェイが訪問するKidsレッスン</h3>
+            <p class="desc">イギリス人のウィルと日本人のジェイの2人で、ご自宅にお伺いします。英語がはじめてのお子さんでも、わからないところはその場で日本語でサポートします。</p>
+            <button class="course-link" type="button" data-open-kids>Kidsのページを見る</button>
           </div>
         </article>
       </div>
     <div class="c-cta">
       <p>まずは、お話を聞かせてください。</p>
+      <p class="c-cta-sub">初回体験レッスンは1,000円です。受付人数に限りがあります。</p>
       <a class="btn" id="cCta" href="#counseling">カウンセリングを申し込む</a>
+    </div>
+  </div>
+</div>
+
+<div class="kview cview" id="fview" role="region" aria-label="特徴" hidden>
+  <div class="c-hero">
+    <div class="c-hero-bg"><img src="top.jpg" alt="ウィルが生徒に楽しそうに英語で話しかけている様子"></div>
+    <div class="wrap c-hero-in">
+      <button class="kback light" id="featuresBack" type="button">← トップに戻る</button>
+      <p class="eyebrow">Features</p>
+      <h2>私たちの特徴</h2>
+      <p class="c-lead">二人で教えるから、話すのが不安な人も安心して始められます。</p>
+    </div>
+  </div>
+  <div class="wrap c-body">
+    <div class="courses">
+      <article class="course">
+        <p class="eyebrow accent">Two Teachers</p>
+        <div>
+          <h3>イギリス人と日本人、二人で教える</h3>
+          <p class="desc">ネイティブのウィルと、日本人のジェイ。二人の講師がいるから、本場の英語に触れながら、日本語でも安心して学べます。</p>
+        </div>
+      </article>
+      <article class="course">
+        <p class="eyebrow accent">Japanese Support</p>
+        <div>
+          <h3>困ったら、その場で日本語のサポート</h3>
+          <p class="desc">「聞き取れない」「言いたいことが言えない」で会話が止まっても大丈夫。ジェイがその場で日本語で助けます。2 to 1 のレッスンでは、これを二人で担当します。</p>
+        </div>
+      </article>
+      <article class="course">
+        <p class="eyebrow accent">Speak First</p>
+        <div>
+          <h3>知ってる英語を、話せる英語に</h3>
+          <p class="desc">学校で習った英語を、実際に口から出す練習が中心です。聞き取りやすい発音のウィルと話しながら、会話のテンポに慣れていきます。</p>
+        </div>
+      </article>
+      <article class="course">
+        <p class="eyebrow accent">Been There</p>
+        <div>
+          <h3>つまずく気持ちがわかる講師</h3>
+          <p class="desc">ジェイは、英語がまったく話せないところから、フィリピンとカナダでの勉強を経て話せるようになりました。ウィルはカナダでバーテンダーと英語講師を経験。日常で使う英語も、教える英語も知っています。</p>
+        </div>
+      </article>
+    </div>
+    <div class="c-cta">
+      <p>まずは、お話を聞かせてください。</p>
+      <a class="btn" id="fCta" href="#counseling">カウンセリングを申し込む</a>
     </div>
   </div>
 </div>
@@ -299,8 +430,7 @@
       <dl class="k-list">
         <div class="k-row"><dt>Style</dt><dd>2 on 1<small>先生2人で、お子さんを担当します。</small></dd></div>
         <div class="k-row"><dt>First lesson</dt><dd>初回無料</dd></div>
-        <div class="k-row"><dt>Per lesson</dt><dd>1コマ 3,000円<small>40分</small></dd></div>
-        <div class="k-row"><dt>Monthly</dt><dd>月額 15,000円<small>6コマ(1コマあたり2,500円)</small></dd></div>
+        <div class="k-row"><dt>Per lesson</dt><dd>1コマ 5,000円<small>40分</small></dd></div>
         <div class="k-row"><dt>Place</dt><dd>ご自宅へ訪問<small>ジェイとウィルの2人でお伺いします。</small></dd></div>
       </dl>
     </section>
@@ -427,6 +557,7 @@
   <div class="stage-body">
     <p class="eyebrow" id="stageEyebrow">Coming Soon</p>
     <h2 id="stageTitle">特徴</h2>
+    <p class="stage-desc" id="stageDesc" hidden></p>
     <p class="stage-msg">現在作成中です</p>
     <p class="stage-en">Under construction</p>
     <button class="stage-close" id="stageClose" type="button">トップに戻る</button>
