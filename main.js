@@ -1,7 +1,7 @@
 /* JAY English in Osaka — 動きの設定ファイル
    一番上の FORM_ENDPOINT が、フォームの送信先(Googleのスクリプト)です。 */
   // 送信先(Google Apps ScriptのウェブアプリのURL)を入れると、フォームの内容がそこへ送信されます。
-  var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbyZ7Imw9wz6wyT5vKRXilIaV9w8cx0TC2JzBvx20sqPQOHYA9UMdM52WYeNbQitL_1ZGQ/exec";
+  var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycby0dg1-O5nTOWRfg027S45luEq8OlLHoBuxOwb9h1iQaaFqSCmzftGMiMGixGIH_tAOcw/exec";
   // フォームの内容を送る共通の処理(Google Apps Script用)。
   // 流入経路の記録: URLの ?utm_source=flyer&utm_content=A のような目印を、最初に来たときに1度だけ覚えておき、
   // 問い合わせ送信時に一緒に送ります(チラシA/Bなどの比較用)。ブラウザの保存が使えなくても動きます。
