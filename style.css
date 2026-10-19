@@ -822,7 +822,7 @@ html{color-scheme:light}body{margin:0}
   .field { display: grid; gap: 6px; min-width: 0; }
   label, legend { font-size: 14px; font-weight: 700; line-height: 1.6; padding: 0; }
   .opt { margin-left: 6px; font-weight: 400; font-size: 12px; color: var(--muted); }
-  input[type="text"], input[type="email"], textarea {
+  input[type="text"], input[type="email"], textarea, select {
     width: 100%;
     min-width: 0;
     padding: 12px 14px;
@@ -835,7 +835,7 @@ html{color-scheme:light}body{margin:0}
     line-height: 1.6;
   }
   textarea { resize: vertical; min-height: 120px; }
-  input:focus, textarea:focus { border-color: var(--accent); }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
   fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
   .chips { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px; }
   .chip { position: relative; font-weight: 400; }

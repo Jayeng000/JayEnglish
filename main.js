@@ -3,8 +3,30 @@
   // 送信先(Google Apps ScriptのウェブアプリのURL)を入れると、フォームの内容がそこへ送信されます。
   var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbyZ7Imw9wz6wyT5vKRXilIaV9w8cx0TC2JzBvx20sqPQOHYA9UMdM52WYeNbQitL_1ZGQ/exec";
   // フォームの内容を送る共通の処理(Google Apps Script用)。
+  // 流入経路の記録: URLの ?utm_source=flyer&utm_content=A のような目印を、最初に来たときに1度だけ覚えておき、
+  // 問い合わせ送信時に一緒に送ります(チラシA/Bなどの比較用)。ブラウザの保存が使えなくても動きます。
+  var TRACK_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content"];
+  var TRACK = (function () {
+    var saved = {}, found = {}, hasNew = false;
+    try { saved = JSON.parse(localStorage.getItem("jayTrack") || "{}") || {}; } catch (e) {}
+    try {
+      var q = new URLSearchParams(location.search);
+      TRACK_KEYS.forEach(function (k) {
+        var v = (q.get(k) || "").slice(0, 60);
+        if (v) { found[k] = v; hasNew = true; }
+      });
+    } catch (e) {}
+    if (hasNew) {
+      found.first_visit = new Date().toISOString().slice(0, 10);
+      saved = found;
+      try { localStorage.setItem("jayTrack", JSON.stringify(saved)); } catch (e) {}
+    }
+    return saved;
+  })();
   function sendForm(form) {
-    return fetch(FORM_ENDPOINT, { method: "POST", body: new URLSearchParams(new FormData(form)) })
+    var body = new URLSearchParams(new FormData(form));
+    TRACK_KEYS.concat(["first_visit"]).forEach(function (k) { if (TRACK[k]) { body.set(k, TRACK[k]); } });
+    return fetch(FORM_ENDPOINT, { method: "POST", body: body })
       .then(function (res) { return res.json(); })
       .then(function (data) { if (!data || !data.ok) { throw new Error("failed"); } });
   }
